@@ -1,0 +1,21 @@
+<input type="file" name="file" id="file">
+
+<script src="dist/sample.js"></script>
+
+<script>
+
+const file = document.getElementById('file');
+const domparser = new DOMParser();
+
+function doFile(e) {
+  var fileData = e.target.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function() {
+      BookParser.parseBook(reader.result)
+  }
+  reader.readAsArrayBuffer(fileData);
+}
+file.addEventListener('change', doFile, false);
+
+</script>
