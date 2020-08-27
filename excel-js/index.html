@@ -1,21 +1,20 @@
 <input type="file" name="file" id="file">
 
-<script src="dist/sample.js"></script>
+<script src="dist/book_streaming_reader.js"></script>
 
 <script>
-
 const file = document.getElementById('file');
-const domparser = new DOMParser();
 
 function doFile(e) {
-  var fileData = e.target.files[0];
+  const data = e.target.files[0];
+  const Book = BookParser.Book;
 
-  var reader = new FileReader();
-  reader.onload = function() {
-      BookParser.parseBook(reader.result)
-  }
-  reader.readAsArrayBuffer(fileData);
+  Book.loadAsync(data)
+    .then(book => book
+      .getSheetByIndex(0)
+      .streamFormatted()
+      .on('data', data => console.log(data))
+      .on('end', () => console.log('end')));
 }
 file.addEventListener('change', doFile, false);
-
 </script>
